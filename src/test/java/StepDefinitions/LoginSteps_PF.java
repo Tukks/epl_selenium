@@ -8,6 +8,7 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
@@ -15,18 +16,24 @@ import org.testng.asserts.SoftAssert;
 import java.time.Duration;
 
 public class LoginSteps_PF {
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;
     SoftAssert softAssert = new SoftAssert();
     WebDriverWait wait = null;
-    LoginPage_PF login = new LoginPage_PF(driver);
+    LoginPage_PF login;
 
 
     @Given("browser is open")
     public void browser_is_open() {
         System.out.println("Inside Step - browser is open PF");
         System.setProperty("webdriver.chrome.driver","C:/Users/jmenioui/PatientLink-Automation-Test/src/test/Drivers/chromedriver.exe");
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
+        login = new LoginPage_PF(driver);
     }
 
     @When("user is on login page")
@@ -37,11 +44,11 @@ public class LoginSteps_PF {
 
     @And("^user enters (.*) and (.*)$")
     public void user_enters_username_and_password(String username , String password) {
-            wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));
-            login.enterUsername(username);
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("password")));
-            login.enterPassword(password);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));
+        login.enterUsername(username);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("password")));
+        login.enterPassword(password);
     }
 
     @When("clicks on login button")
@@ -60,6 +67,4 @@ public class LoginSteps_PF {
         driver.quit();
         softAssert.assertAll();
     }
-
-
 }

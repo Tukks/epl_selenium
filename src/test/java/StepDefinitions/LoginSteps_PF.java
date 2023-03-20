@@ -1,11 +1,15 @@
 package StepDefinitions;
 
 import PageFactory.LoginPage_PF;
+import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -66,5 +70,15 @@ public class LoginSteps_PF {
         driver.close();
         driver.quit();
         softAssert.assertAll();
+    }
+
+    @After
+    public void afterScenario(Scenario scenario) {
+        if (scenario.isFailed()) {
+            // Capture d'écran en cas d'échec du scénario
+            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", "Capture d'écran"); // Ajout de la capture d'écran au rapport Cucumber
+        }
+        driver.quit(); // Fermeture du navigateur
     }
 }

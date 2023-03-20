@@ -7,5 +7,5 @@ Feature: feature to test login functionality
     Then user is navigated to the home page
     Examples:
       | username | password |
-      | pread@enovacom.fr | Operations2022# |
-      | enovacom@enovacom.fr | Qualification2022# |
+      | preade@enovacom.fr | Operations2022# |
+      | enovacome@enovacom.fr | Qualification2022# |
